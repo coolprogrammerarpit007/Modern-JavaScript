@@ -5,7 +5,6 @@
 
 // Getting Acess to the dom elements
 
-const inputBtn = document.getElementById(`currency-input`);
 const selectCurrency = document.getElementById(`currency-select`);
 const selectCountry = document.getElementById(`country-select`);
 const convertBtn = document.getElementById(`result`);
@@ -27,14 +26,33 @@ const convertCurrency = async () => {
 
 // Now consuming the promise
 convertCurrency().then((data) => {
-  let html = ``;
+  let currencyHtml = ``;
+  let countryHtml = ``;
   for (let key in data) {
     let currecyName = data[key][`name`];
     let countryCode = data[key][`code`];
 
-    html += `
+    currencyHtml += `
     <option value="${countryCode}">${currecyName}</option>
     `;
+
+    countryHtml += `
+    <option value="${countryCode}">${countryCode}</option>
+    `;
   }
-  selectCurrency.innerHTML = html;
+
+  // Appending generated data into html
+  selectCurrency.innerHTML = currencyHtml;
+  selectCountry.innerHTML = countryHtml;
+
+  // Adding the functuanility to the conversion btn
+
+  convertBtn.addEventListener(`click`, function (e) {
+    const inputBtn = document.getElementById(`currency-input`);
+    const currecyInput = Number(inputBtn.value);
+    const countryKey = selectCountry.value.toLowerCase();
+    const converionRate = data[countryKey][`rate`];
+    const convertedMoney = currecyInput * converionRate;
+    console.log(convertedMoney);
+  });
 });
