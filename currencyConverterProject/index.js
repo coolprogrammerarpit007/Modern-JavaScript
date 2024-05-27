@@ -8,7 +8,9 @@
 const selectCurrency = document.getElementById(`currency-select`);
 const selectCountry = document.getElementById(`country-select`);
 const convertBtn = document.getElementById(`result`);
-
+const convertedPriceContainer = document.getElementById(
+  `coverted-price-container`
+);
 // ***********************************
 // ***********************************
 
@@ -28,6 +30,7 @@ const convertCurrency = async () => {
 convertCurrency().then((data) => {
   let currencyHtml = ``;
   let countryHtml = ``;
+  let convertedPriceHtml = ``;
   for (let key in data) {
     let currecyName = data[key][`name`];
     let countryCode = data[key][`code`];
@@ -54,5 +57,11 @@ convertCurrency().then((data) => {
     const converionRate = data[countryKey][`rate`];
     const convertedMoney = currecyInput * converionRate;
     console.log(convertedMoney);
+
+    // Appending it to converted Price Container
+    convertedPriceHtml = `
+     <p class="convertedMoney">${convertedMoney}</p>
+    `;
+    convertedPriceContainer.innerHTML = convertedPriceHtml;
   });
 });
