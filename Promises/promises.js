@@ -1,6 +1,8 @@
 `use strict`;
 
-const cart = [`Pants`, `Shirt`, `Kurta`];
+// const cart = [`Pants`, `Shirt`, `Kurta`];
+
+// consuming/handling Promises
 
 // createOrder(cart); // gives us orderId
 // proceedToPayment(orderId); // Takes OrderId and will take us to payment page
@@ -38,3 +40,84 @@ const cart = [`Pants`, `Shirt`, `Kurta`];
 // Interview :- What is Promise?
 // A promise is an object representing eventual completion or faliure of an asynchronous operation.
 //  when writing promise chain, remember to always return a promise.
+
+// Creating Our own Promise
+
+const cart = [`Pants`, `Shirt`, `Kurta`];
+
+// Creating the promise
+// we create promise by using the promise constructor, this promise constructor will take a callbcak function which has two parameters, resolve and reject
+
+function validateCart(cart) {
+  return true;
+}
+
+function validatePayment(orderId) {
+  return true;
+}
+
+const createOrder = function (cart) {
+  const promise = new Promise((resolve, reject) => {
+    // write logic of code
+    // create order and return orderId
+
+    if (!validateCart(cart)) {
+      const err = new Error(`cart is not valid!`);
+      reject(err);
+    }
+
+    // logic for create order
+    // const orderId = DBcall();// return orderId
+    let orderId = `12345`;
+    if (orderId) {
+      setTimeout(() => {
+        resolve(orderId);
+      }, "5000");
+    }
+  });
+
+  return promise;
+};
+
+const proceedToPayment = function (orderId) {
+  return new Promise((resolve, reject) => {
+    if (!validatePayment(orderId)) {
+      reject(err);
+    }
+
+    let paymentId = `245678`;
+    if (paymentId) {
+      setTimeout(() => {
+        resolve(paymentId);
+      }, "5000");
+    }
+  });
+};
+
+// consuming of promise
+// const promise = createOrder(cart); // gives orderId
+// console.log(promise);
+
+// promise
+//   .then((orderId) => {
+//     console.log(orderId);
+//     // proceedToPayment(orderId);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+createOrder(cart)
+  .then((orderId) => {
+    console.log(orderId);
+    return orderId;
+  })
+  .then((orderId) => {
+    return proceedToPayment(orderId);
+  })
+  .then((paymentInfo) => {
+    console.log(paymentInfo);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
