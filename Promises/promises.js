@@ -43,56 +43,56 @@
 
 // Creating Our own Promise
 
-const cart = [`Pants`, `Shirt`, `Kurta`];
+// const cart = [`Pants`, `Shirt`, `Kurta`];
 
 // Creating the promise
 // we create promise by using the promise constructor, this promise constructor will take a callbcak function which has two parameters, resolve and reject
 
-function validateCart(cart) {
-  return true;
-}
+// function validateCart(cart) {
+//   return true;
+// }
 
-function validatePayment(orderId) {
-  return true;
-}
+// function validatePayment(orderId) {
+//   return true;
+// }
 
-const createOrder = function (cart) {
-  const promise = new Promise((resolve, reject) => {
-    // write logic of code
-    // create order and return orderId
+// const createOrder = function (cart) {
+//   const promise = new Promise((resolve, reject) => {
+//     // write logic of code
+//     // create order and return orderId
 
-    if (!validateCart(cart)) {
-      const err = new Error(`cart is not valid!`);
-      reject(err);
-    }
+//     if (!validateCart(cart)) {
+//       const err = new Error(`cart is not valid!`);
+//       reject(err);
+//     }
 
-    // logic for create order
-    // const orderId = DBcall();// return orderId
-    let orderId = `12345`;
-    if (orderId) {
-      setTimeout(() => {
-        resolve(orderId);
-      }, "5000");
-    }
-  });
+//     // logic for create order
+//     // const orderId = DBcall();// return orderId
+//     let orderId = `12345`;
+//     if (orderId) {
+//       setTimeout(() => {
+//         resolve(orderId);
+//       }, "5000");
+//     }
+//   });
 
-  return promise;
-};
+// return promise;
+// };
 
-const proceedToPayment = function (orderId) {
-  return new Promise((resolve, reject) => {
-    if (!validatePayment(orderId)) {
-      reject(err);
-    }
+// const proceedToPayment = function (orderId) {
+//   return new Promise((resolve, reject) => {
+//     if (!validatePayment(orderId)) {
+//       reject(err);
+//     }
 
-    let paymentId = `245678`;
-    if (paymentId) {
-      setTimeout(() => {
-        resolve(paymentId);
-      }, "5000");
-    }
-  });
-};
+//     let paymentId = `245678`;
+//     if (paymentId) {
+//       setTimeout(() => {
+//         resolve(paymentId);
+//       }, "5000");
+//     }
+//   });
+// };
 
 // consuming of promise
 // const promise = createOrder(cart); // gives orderId
@@ -107,17 +107,69 @@ const proceedToPayment = function (orderId) {
 //     console.log(err);
 //   });
 
-createOrder(cart)
-  .then((orderId) => {
-    console.log(orderId);
-    return orderId;
+// createOrder(cart)
+//   .then((orderId) => {
+//     console.log(orderId);
+//     return orderId;
+//   })
+//   .then((orderId) => {
+//     return proceedToPayment(orderId);
+//   })
+//   .then((paymentInfo) => {
+//     console.log(paymentInfo);
+//   })
+//   .catch((err) => {
+//     console.log(err);
+//   });
+
+// ***********************************************************
+// ***********************************************************
+
+// Promise.all()
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(`P1 got fulfilled!`);
+  }, "3000");
+});
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(`P2 got fulfilled!`);
+  }, "5000");
+  // setTimeout(() => {
+  //   reject(`P2 got rejeeted!`);
+  // }, "1000");
+});
+const p3 = new Promise((resolve, reject) => {
+  // setTimeout(() => {
+  //   resolve(`P3 got fulfilled!`);
+  // }, "2000");
+  setTimeout(() => {
+    reject(`P3 got rejected!`);
+  }, "2000");
+});
+
+// Promise.all([p1, p2, p3])
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => console.error(err));
+
+// 2. Promise.allSettled([])
+// Promise.allSettled([p1, p2, p3])
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => console.error(err));
+
+// // 3. Promise.race()
+// Promise.race([p1, p2, p3])
+//   .then((data) => {
+//     console.log(data);
+//   })
+//   .catch((err) => console.error(err));
+// 3. Promise.race()
+Promise.any([p1, p2, p3])
+  .then((data) => {
+    console.log(data);
   })
-  .then((orderId) => {
-    return proceedToPayment(orderId);
-  })
-  .then((paymentInfo) => {
-    console.log(paymentInfo);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+  .catch((err) => console.error(err));
